@@ -1,0 +1,29 @@
+---
+- name: Configure jenkins master server
+  hosts: jenkins-master
+  become: true
+
+  tasks:
+  - name: Add key
+    ansible.builtin.apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      state: present
+
+  - name: Add jenkins repository
+    ansible.builtin.apt_repository:
+      repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+      state: present
+
+  - name: Install Java
+    ansible.builtin.apt:
+      name: openjdk-17-jre
+      state: present
+
+  - name: Install Jenkins
+    ansible.builtin.apt:
+      name: jenkins
+      state: present
+
+  - name: Update cache
+    ansible.builtin.apt:
+      update_cache: true
