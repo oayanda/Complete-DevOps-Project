@@ -1,12 +1,12 @@
 [jenkins-master]
-10.1.2.177
+10.1.2.143
 
 [jenkins-master:vars]
 ansible_user=ubuntu
 ansible_ssh_private_key_file=devops.pem
 
 [jenkins-slave]
-10.1.2.8
+10.1.2.74
 
 [jenkins-slave:vars]
 ansible_user=ubuntu
