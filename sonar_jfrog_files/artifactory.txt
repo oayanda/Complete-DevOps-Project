@@ -1,0 +1,3 @@
+Jfrog Artifactory URL: https://oluwadevops.jfrog.io/
+Artifactory location: /home/ubuntu/Jenkins/workspace/mulit_main/jarstaging/com/valaxy/demo-workshop/2.1.2
+Credentials: jfrog-token

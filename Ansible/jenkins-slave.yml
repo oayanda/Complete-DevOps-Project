@@ -1,26 +1,36 @@
 ---
 - name: Configure jenkins with maven
-  hosts: jenkins-slave
+  hosts: Jslave
   become: true
 
   tasks:
-  - name: Update cache
-    ansible.builtin.apt:
-      update_cache: true
+    - name: Update cache
+      ansible.builtin.apt:
+        update_cache: true
 
-  - name: Install Java
-    ansible.builtin.apt:
-      name: openjdk-11-jre
-      state: present
+    - name: Install Java
+      ansible.builtin.apt:
+        name: openjdk-11-jre
+        state: present
 
-  - name: Download maven package
-    ansible.builtin.get_url:
-      url: https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
-      dest: /home/ubuntu
-      mode: '777'
+    - name: Download maven package
+      ansible.builtin.get_url:
+        url: https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+        dest: /home/ubuntu
+        mode: '777'
 
-  - name: Extract maven
-    ansible.builtin.unarchive:
-      src: apache-maven-3.9.4-bin.tar.gz
-      dest: /home/ubuntu
-      remote_src: true
+    - name: Extract maven
+      ansible.builtin.unarchive:
+        src: apache-maven-3.9.4-bin.tar.gz
+        dest: /home/ubuntu
+        remote_src: true
+
+    - name: Install docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Give permission 777 on /var/run/docker.sock
+      ansible.builtin.file:
+        path: /var/run/docker.sock
+        mode: '777'

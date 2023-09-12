@@ -6,6 +6,7 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.ssh-access-sg.id]
   subnet_id              = aws_subnet.main-public-subnet-1.id
   for_each               = toset(["Jenkins-master", "Build-slave", "Ansible"])
+
   tags = {
     Name = "${each.key}"
   }
@@ -26,8 +27,8 @@ resource "aws_security_group" "ssh-access-sg" {
 
   }
 
-# Inbound rule for Jenkins Server
-   ingress {
+  # Inbound rule for Jenkins Server
+  ingress {
     description = "Jenkins HTTP accesss"
     from_port   = 8080
     to_port     = 8080
@@ -48,3 +49,4 @@ resource "aws_security_group" "ssh-access-sg" {
     Name = "allow_ssh_access"
   }
 }
+
