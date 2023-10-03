@@ -30,7 +30,59 @@
         name: docker.io
         state: present
 
+    - name: Install unzip
+      ansible.builtin.apt:
+        name: unzip
+        state: present
+
     - name: Give permission 777 on /var/run/docker.sock
       ansible.builtin.file:
         path: /var/run/docker.sock
         mode: '777'
+
+    - name: Download kubectl
+      ansible.builtin.get_url:
+        url: https://dl.k8s.io/release/v1.27.1/bin/linux/amd64/kubectl
+        dest: /home/ubuntu
+        mode: u+x
+
+    - name: Move kubectl to system path
+      ansible.builtin.copy:
+        src: ./kubectl
+        dest: /usr/local/bin
+        mode: '777'
+        remote_src: true
+
+    - name: Download awscli
+      ansible.builtin.get_url:
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /home/ubuntu
+        mode: u+x
+
+    - name: Extract awscli
+      ansible.builtin.unarchive:
+        src: /home/ubuntu/awscli-exe-linux-x86_64.zip
+        dest: /home/ubuntu
+        remote_src: true
+    
+    - name: Install awscli
+      ansible.builtin.shell: ./aws/install
+    
+    - name: Download helm
+      ansible.builtin.get_url:
+        url: https://get.helm.sh/helm-v3.13.0-rc.1-linux-amd64.tar.gz
+        dest: /home/ubuntu
+        mode: u+x
+
+    - name: Extract helm
+      ansible.builtin.unarchive:
+        src: /home/ubuntu/helm-v3.13.0-rc.1-linux-amd64.tar.gz
+        dest: /home/ubuntu
+        remote_src: true
+    
+    - name: Move helm /usr/local/bin
+      ansible.builtin.copy:
+        src: ./linux-amd64/helm
+        dest: /usr/local/bin
+        mode: '777'
+        remote_src: true

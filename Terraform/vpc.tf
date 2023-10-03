@@ -63,3 +63,16 @@ resource "aws_route_table_association" "main-pub-assoication-2" {
   subnet_id      = aws_subnet.main-public-subnet-2.id
   route_table_id = aws_route_table.main-public-rtb.id
 }
+
+
+module "sgs" {
+  source = "./sg_eks"
+  vpc_id = aws_vpc.main-vpc.id
+}
+
+module "eks" {
+  source     = "./eks"
+  vpc_id     = aws_vpc.main-vpc.id
+  subnet_ids = [aws_subnet.main-public-subnet-1.id, aws_subnet.main-public-subnet-2.id]
+  sg_ids     = module.sgs.security_group_public
+}
